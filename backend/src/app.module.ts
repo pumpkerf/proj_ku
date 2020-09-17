@@ -1,12 +1,25 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import {CourseController} from './course.controller'
-import {CourseService } from './course.service'
+
+import { TypeOrmModule } from '@nestjs/typeorm'
+import Course from './courses/course.entity'
+import {CoursesModule} from './courses/courses.module'
 @Module({
-  imports: [],
+  imports: [
+    //import type of mongodb
+    TypeOrmModule.forRoot({
+      type: 'mongodb',
+      host: 'localhost',
+      database: 'test2',
+      entities: [Course],
+      synchronize: true,
+    }),
+    CoursesModule,
+  ],
   //dont forget to import module
-  controllers: [AppController,CourseController],
-  providers: [CourseService,AppService],
+  controllers: [AppController],
+  //provider is an injectable modules
+  providers: [AppService],
 })
 export class AppModule {}
